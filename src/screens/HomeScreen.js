@@ -5,12 +5,14 @@ import {
   Dimensions,
   StatusBar,
   ScrollView,
-  Image
+  Image,
+  FlatList,
 } from 'react-native';
 import React from 'react';
 import {colors, parameters} from '../global/styles';
 import {Icon} from 'react-native-elements';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
+import {filterData} from '../global/data';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
@@ -28,22 +30,46 @@ const HomeScreen = () => {
         </View>
       </View>
 
-      <ScrollView bounces={false}>
+      <ScrollView bounces={false} nestedScrollEnabled={true}>
         <View style={styles.home}>
           <Text style={styles.text1}>Destress your commute</Text>
           <View style={styles.view1}>
             <View style={styles.view8}>
-              <Text style={styles.text2}> Read a book. Take a nap. Stare out the window.</Text>
+              <Text style={styles.text2}>
+                {' '}
+                Read a book. Take a nap. Stare out the window.
+              </Text>
               <View style={styles.button1}>
                 <Text style={styles.button1Text}> Ride With Uber</Text>
               </View>
             </View>
-            <View >
+            <View>
               <Image
-              style={styles.image1}
-              source={require('../../assets/uberCar.png')}
+                style={styles.image1}
+                source={require('../../assets/uberCar.png')}
               />
             </View>
+          </View>
+          <View>
+          <ScrollView horizontal={true} style={{ width: "100%" }}>
+            <FlatList
+              numColumns={4}
+              
+              showHorizontalScrollIndicator={false}
+              data={filterData}
+              keyExtractor={item => item.id}
+              renderItem={({item}) => (
+                <View style={styles.card}>
+                  <View style={styles.view2}>
+                    <Image style={styles.image2} source={item.image} />
+                  </View>
+                  <View>
+                    <Text style={styles.title}>{item.name}</Text>
+                    </View>
+                </View>
+              )}
+            />
+            </ScrollView>
           </View>
         </View>
       </ScrollView>
