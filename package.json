@@ -10,9 +10,14 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-community/geolocation": "^2.1.0",
     "react": "18.0.0",
     "react-native": "0.69.1",
     "react-native-elements": "^3.4.2",
+    "react-native-get-location": "^2.2.1",
+    "react-native-location": "^2.5.0",
+    "react-native-maps": "^0.31.1",
+    "react-native-permissions": "^3.4.0",
     "react-native-status-bar-height": "^2.6.0",
     "react-native-vector-icons": "^9.2.0"
   },
