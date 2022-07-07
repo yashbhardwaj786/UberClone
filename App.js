@@ -8,12 +8,11 @@
 
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import HomeScreen from './src/screens/HomeScreen';
+import RoootNavigator from './src/navigations/RootNavigator'
+
 const App = () => {
   return (
-    <View styles={styles.container}>
-      <HomeScreen/>
-    </View>
+    <RoootNavigator />
   );
 };
 

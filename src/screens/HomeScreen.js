@@ -11,6 +11,7 @@ import {
   PermissionsAndroid,
   Platform,
   Alert,
+  TouchableOpacity,
 } from 'react-native';
 import React, {useState, useRef, useEffect} from 'react';
 import {colors, parameters} from '../global/styles';
@@ -23,14 +24,14 @@ import Geolocation from '@react-native-community/geolocation';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
-const HomeScreen = () => {
+const HomeScreen = ({navigation}) => {
   const [latlong, setLatLong] = useState({});
   const _map = useRef(1);
 
   useEffect(() => {
     checkPermission();
-      // console.log(latlng)
-      [];
+    // console.log(latlng)
+    [];
   });
 
   const checkPermission = async () => {
@@ -42,7 +43,7 @@ const HomeScreen = () => {
         if (granted === PermissionsAndroid.RESULTS.GRANTED) {
           getLocation();
         } else {
-         askPermission();
+          askPermission();
         }
       } catch (err) {
         console.log('catch');
@@ -52,19 +53,22 @@ const HomeScreen = () => {
 
   const askPermission = async () => {
     const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,);
-      PermissionsAndroid.RESULTS.GRANTED = granted;
-      getLocation();
+      PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION,
+    );
+    PermissionsAndroid.RESULTS.GRANTED = granted;
+    getLocation();
   };
 
   const getLocation = async () => {
     try {
       Geolocation.getCurrentPosition(data => {
-        setLatLong({lattitude: data.coords.latitude, longitude: data.coords.longitude});
-
-      })
-    }catch(err){
-        console.warn("Error")
+        setLatLong({
+          lattitude: data.coords.latitude,
+          longitude: data.coords.longitude,
+        });
+      });
+    } catch (err) {
+      console.warn('Error');
     }
   };
 
@@ -90,9 +94,11 @@ const HomeScreen = () => {
                 {' '}
                 Read a book. Take a nap. Stare out the window.
               </Text>
-              <View style={styles.button1}>
-                <Text style={styles.button1Text}> Ride With Uber</Text>
-              </View>
+              <TouchableOpacity onPress={() => {navigation.navigate("RequestScreen")}}>
+                <View style={styles.button1}>
+                  <Text style={styles.button1Text}> Ride With Uber</Text>
+                </View>
+              </TouchableOpacity>
             </View>
             <View>
               <Image
@@ -339,7 +345,7 @@ const styles = StyleSheet.create({
   view5: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: 'whitesmoke',
     paddingVertical: 25,
     justifyContent: 'space-between',
     marginHorizontal: 15,
@@ -351,7 +357,7 @@ const styles = StyleSheet.create({
   view5copy: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: 'whitesmoke',
     paddingVertical: 25,
     justifyContent: 'space-between',
     marginHorizontal: 15,
