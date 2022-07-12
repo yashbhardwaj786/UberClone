@@ -21,7 +21,7 @@ export default class MapComponent extends Component {
           style={styles.map}
           customMapStyle={mapStyle}
           ref={this._map}>
-          {this.props.userOrigin.latitude != null && (
+          {this.props.userOrigin.latitude != null && 
             <MapView.Marker
               coordinate={this.props.userOrigin}
               anchor={{x: 0.5, y: 0.5}}>
@@ -31,7 +31,19 @@ export default class MapComponent extends Component {
                 resizeMode="cover"
               />
             </MapView.Marker>
-          )}
+          }
+
+          {this.props.userDestination.latitude != null && 
+            <MapView.Marker
+              coordinate={this.props.userDestination}
+              anchor={{x: 0.5, y: 0.5}}>
+              <Image
+                source={require('../../assets/location.png')}
+                style={styles.markerDestination}
+                resizeMode="cover"
+              />
+            </MapView.Marker>
+          }
         </MapView>
       </View>
     );

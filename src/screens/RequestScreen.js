@@ -11,31 +11,42 @@ import {colors, parameters} from '../global/styles';
 import MapView, {Marker} from 'react-native-maps';
 import MapComponent from '../components/MapComponent';
 import {Icon, Avatar} from 'react-native-elements';
-import { OriginContext} from '../context/context';
+import {OriginContext, DestinationContext} from '../context/context';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const RequestScreen = ({navigation}) => {
   const {origin, dispatchOrigin} = useContext(OriginContext);
-  const [userOrigin, setUserOrigin] = useState({latitude: origin.latitude,
-     longitude: origin.longitude
+  const [userOrigin, setUserOrigin] = useState({
+    latitude: origin.latitude,
+    longitude: origin.longitude,
+  });
+
+  const {destination, dispatchDestination} = useContext(DestinationContext);
+  const [userDestination, setUserDestination] = useState({
+    latitude: destination.latitude,
+    longitude: destination.longitude,
+  });
+
+  useEffect(() => {
+    setUserOrigin({latitude: origin.latitude, longitude: origin.longitude});
+    setUserDestination({
+      latitude: destination.latitude,
+      longitude: destination.longitude,
     });
-
-    useEffect(() => {
-        setUserOrigin({latitude: origin.latitude,longitude: origin.longitude});
-    }, [origin])
-
+  }, [origin, destination]);
 
   return (
     <View style={styles.container}>
       <View style={styles.view1}>
-        <Icon style={{marginTop: 10}}
+        <Icon
+          style={{marginTop: 10}}
           type="material-community"
           name="arrow-left"
           color={colors.grey1}
           size={32}
-          onPress ={()=>navigation.goBack()} 
+          onPress={() => navigation.goBack()}
         />
       </View>
       <View style={styles.view2}>
@@ -89,7 +100,7 @@ const RequestScreen = ({navigation}) => {
           </View>
         </View>
       </View>
-      <MapComponent userOrigin={userOrigin} />
+      <MapComponent userOrigin={userOrigin} userDestination = {userDestination} />
     </View>
   );
 };

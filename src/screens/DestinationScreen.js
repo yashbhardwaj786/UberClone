@@ -11,15 +11,19 @@ import {colors, parameters} from '../global/styles';
 import {Icon, Avatar} from 'react-native-elements';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import {GOOGLE_MAPS_APIKEY} from '@env';
-import { OriginContext} from '../context/context';
+import {OriginContext, DestinationContext} from '../context/context';
 
 const SCREEN_HEIGHT = Dimensions.get('window').height;
 const SCREEN_WIDTH = Dimensions.get('window').width;
 
 const DestinationScreen = ({navigation}) => {
   const {dispatchOrigin} = useContext(OriginContext);
+  const {dispatchDestination} = useContext(DestinationContext);
   const textInput1 = useRef(4);
   const textInput2 = useRef(5);
+
+  const [destination, setDestination] = useState(false);
+
   // console.warn(GOOGLE_MAPS_APIKEY);
   // LogBox.ignoreAllLogs();
 
@@ -56,39 +60,75 @@ const DestinationScreen = ({navigation}) => {
           </View>
         </TouchableOpacity>
       </View>
-      <GooglePlacesAutocomplete
-        nearbyPlacesAPI="GooglePlaceSearch"
-        placeholder="Going to..."
-        listViewDisplayed="auto"
-        debounce={400}
-        currentLocation={true}
-        currentLocationLabel="Current location"
-        ref={textInput1}
-        minLength={2}
-        enablePoweredByContainer={false}
-        fetchDetails={true}
-        autoFocus={true}
-        styles={autoComplete}
-        query={{
-          key: GOOGLE_MAPS_APIKEY,
-          language: 'en',
-        }}
-        onPress={(data, details = null) => {
-          dispatchOrigin({
-            type: 'ADD_ORIGIN',
-            payload: {
-              latitude: details.geometry.location.lat,
-              longitude: details.geometry.location.lng,
-              address: details.formatted_address,
-              name: details.name,
-            },
-          });
+      { destination === false &&
+        <GooglePlacesAutocomplete
+          nearbyPlacesAPI="GooglePlaceSearch"
+          placeholder="From..."
+          listViewDisplayed="auto"
+          debounce={400}
+          currentLocation={true}
+          currentLocationLabel="Current location"
+          ref={textInput1}
+          minLength={2}
+          enablePoweredByContainer={false}
+          fetchDetails={true}
+          autoFocus={true}
+          styles={autoComplete}
+          query={{
+            key: GOOGLE_MAPS_APIKEY,
+            language: 'en',
+          }}
+          onPress={(data, details = null) => {
+            dispatchOrigin({
+              type: 'ADD_ORIGIN',
+              payload: {
+                latitude: details.geometry.location.lat,
+                longitude: details.geometry.location.lng,
+                address: details.formatted_address,
+                name: details.name,
+              },
+            });
 
-          // setDestination(true);
-          navigation.goBack()
-        }}
-        onFail={error => console.error(error)}
-      />
+            setDestination(true);
+            // navigation.goBack();
+          }}
+        />
+      }
+
+      { destination === true &&
+        <GooglePlacesAutocomplete
+          nearbyPlacesAPI="GooglePlaceSearch"
+          placeholder="Going to..."
+          listViewDisplayed="auto"
+          debounce={400}
+          currentLocation={true}
+          currentLocationLabel="Current location"
+          ref={textInput2}
+          minLength={2}
+          enablePoweredByContainer={false}
+          fetchDetails={true}
+          autoFocus={true}
+          styles={autoComplete}
+          query={{
+            key: GOOGLE_MAPS_APIKEY,
+            language: 'en',
+          }}
+          onPress={(data, details = null) => {
+            dispatchDestination({
+              type: 'ADD_DESTINATION',
+              payload: {
+                latitude: details.geometry.location.lat,
+                longitude: details.geometry.location.lng,
+                address: details.formatted_address,
+                name: details.name,
+              },
+            });
+
+            navigation.goBack();
+
+          }}
+        />
+      }
     </>
   );
 };

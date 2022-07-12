@@ -9,7 +9,7 @@
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import RoootNavigator from './src/navigations/RootNavigator';
-import {OriginContextProvider, OriginContextProvider} from './src/context/context';
+import {OriginContextProvider, DestinationContextProvider} from './src/context/context';
 
 const App = () => {
   return (
