@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {mapStyle} from '../global/mapStyle';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import {colors, parameters} from '../global/styles';
-// import MapViewDirections from 'react-native-maps-directions';
+import MapViewDirections from 'react-native-maps-directions';
 import {GOOGLE_MAPS_APIKEY} from '@env';
 
 export default class MapComponent extends Component {
@@ -13,6 +13,19 @@ export default class MapComponent extends Component {
     this._map = React.createRef(35);
   }
 
+  componentDidUpdate(){
+    setTimeout(()=>{
+      if(this.props.userDestination.latitude !== null){
+        this._map.current.fitToCoordinates(
+          [this.props.userOrigin,this.props.userDestination],{
+            edgePadding:{top:450,right:50,left:50,bottom:350},
+            animated:true
+          }
+        )
+      }
+    },500)
+ }
+
   render() {
     return (
       <View>
@@ -21,7 +34,7 @@ export default class MapComponent extends Component {
           style={styles.map}
           customMapStyle={mapStyle}
           ref={this._map}>
-          {this.props.userOrigin.latitude != null && 
+          {this.props.userOrigin.latitude != null && (
             <MapView.Marker
               coordinate={this.props.userOrigin}
               anchor={{x: 0.5, y: 0.5}}>
@@ -31,9 +44,9 @@ export default class MapComponent extends Component {
                 resizeMode="cover"
               />
             </MapView.Marker>
-          }
+          )}
 
-          {this.props.userDestination.latitude != null && 
+          {this.props.userDestination.latitude != null && (
             <MapView.Marker
               coordinate={this.props.userDestination}
               anchor={{x: 0.5, y: 0.5}}>
@@ -43,7 +56,16 @@ export default class MapComponent extends Component {
                 resizeMode="cover"
               />
             </MapView.Marker>
-          }
+          )}
+          {this.props.userDestination.latitude !== null && (
+            <MapViewDirections
+              origin={this.props.userOrigin}
+              destination={this.props.userDestination}
+              apikey={GOOGLE_MAPS_APIKEY}
+              strokeWidth={4}
+              strokeColor={colors.black}
+            />
+          )}
         </MapView>
       </View>
     );
