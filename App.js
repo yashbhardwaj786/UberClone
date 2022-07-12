@@ -8,18 +8,23 @@
 
 import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
-import RoootNavigator from './src/navigations/RootNavigator'
+import RoootNavigator from './src/navigations/RootNavigator';
+import {OriginContextProvider, OriginContextProvider} from './src/context/context';
 
 const App = () => {
   return (
-    <RoootNavigator />
+    <DestinationContextProvider>
+      <OriginContextProvider>
+        <RoootNavigator />
+      </OriginContextProvider>
+    </DestinationContextProvider>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
-  }
+    flex: 1,
+  },
 });
 
 export default App;

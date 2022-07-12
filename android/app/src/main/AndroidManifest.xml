@@ -10,8 +10,8 @@
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
-      android:icon="@drawable/ubercar"
-      android:roundIcon="@drawable/ubercar"
+      android:icon="@drawable/ubersplash"
+      android:roundIcon="@drawable/ubersplash"
       android:allowBackup="false"
       android:theme="@style/AppTheme">
       <activity
